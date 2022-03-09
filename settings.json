@@ -1,0 +1,17 @@
+{
+  "repositories": [
+    "date-x",
+    "cross-process-lock",
+    "lines-builder",
+    "diffter",
+    "object-set-type",
+    "require-it",
+    "with-aws-creds"
+  ],
+  "repositoriesWithPages": [
+    "lines-builder",
+    "with-aws-creds"
+  ],
+  "account": "szikszail",
+  "domain": "6ai.lol"
+}
