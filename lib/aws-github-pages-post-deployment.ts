@@ -1,9 +1,9 @@
-import { repositoriesWithPages, account } from "../settings.json";
+import { repositories, account } from "../settings.json";
 import { setPageDomain, setRepositoryDomain } from "./github";
 
 
 (async () => {
-  for (const repository of repositoriesWithPages) {
+  for (const repository of repositories) {
     await processRepository(repository);
   }
 })();
