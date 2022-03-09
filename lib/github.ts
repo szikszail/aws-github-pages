@@ -41,12 +41,42 @@ export async function getPagesSettings(repository: string): Promise<any> {
   }));
 }
 
+export async function getPagesCertificate(repository: string): Promise<any> {
+  const data = await getPagesSettings(repository);
+  if (data === null || !data.https_certificate) {
+    return null;
+  }
+  return data.https_certificate;
+}
+
+export async function waitForPagesCertificate(repository: string): Promise<any> {
+  for (let i = 0; i < 10; ++i) {
+    const cert = await getPagesCertificate(repository);
+    if (!cert) {
+      return null;
+    }
+    if (cert.state === 'approve') {
+      return cert;
+    }
+    await new Promise(resolve => setTimeout(resolve, 5000));
+  }
+  return null;
+}
+
 export async function setPageDomain(repository: string): Promise<any> {
+  const cert = await getPagesCertificate(repository);
+  if (!cert) {
+    await handleOctokitRestRequest(octokit.rest.repos.updateInformationAboutPagesSite({
+      owner: account,
+      repo: repository,
+      cname: `${repository}.${domain}`,
+    }));
+    await waitForPagesCertificate(repository);
+  }
   return await handleOctokitRestRequest(octokit.rest.repos.updateInformationAboutPagesSite({
     owner: account,
     repo: repository,
     cname: `${repository}.${domain}`,
-    public: true,
     https_enforced: true,
   }));
 }

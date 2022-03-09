@@ -2,6 +2,7 @@
   "repositories": [
     "lines-builder",
     "npm-package",
+    "require-it",
     "with-aws-creds"
   ],
   "account": "szikszail",
