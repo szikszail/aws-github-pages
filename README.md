@@ -15,7 +15,8 @@ This project sets custom domains for GitHub Pages of the repositories, including
    2. `AWS_REGION` to an AWS region you chose to use
    3. `GH_ACCESS_TOKEN` to a GitHub Personal Access Token with `repo` scope set
 3. Update `settings.json` with your account name and domain to use (*repositories should be empty or ignored, the scripts will overwrite it*) 
-4. Run the `Deploy` action when you wish, which will:
+4. **IMPORTANT** Update stack name in `bin/aws-github-pages.ts` to make it unique
+5. Run the `Deploy` action when you wish, which will:
    1. Read all your repositories and collect all **public** and **owned** ones that have **GitHub Pages** enabled or has `gh-pages` branch
    2. Deploy the necessary `CNAME` records to the domain's hosted zone in AWS
       <br>(i.e. `CNAME {repository-name}.{domain}` to `{account}.github.io`)
