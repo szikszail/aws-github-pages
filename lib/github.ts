@@ -124,5 +124,5 @@ export async function isRepositoryEnabled(repository: string): Promise<boolean> 
     owner: account,
     repo: repository,
   }));
-  return data && !data.fork && !data.archived && !data.disabled;
+  return data && !data.fork && !data.archived && !data.disabled && data.visibility === 'public';
 }
