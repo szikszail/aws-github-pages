@@ -2,6 +2,8 @@ import assert = require("assert");
 import { domain, account } from "../settings.json";
 import { Octokit } from "@octokit/rest";
 
+export const GITHUB_PAGES_BRANCH = 'gh-pages';
+
 const github_access_token = process.env.GITHUB_ACCESS_TOKEN;
 
 assert(github_access_token, 'GitHub Access Token must be set!');
@@ -16,12 +18,12 @@ async function handleOctokitRestRequest(request: Promise<any>): Promise<any> {
   try {
     const response = await request;
     if (response.status >= 400) {
-      console.error(response);
+      // console.error(response);
       return null;
     }
     return response.data;
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     return null;
   }
 }
@@ -38,6 +40,18 @@ export async function getPagesSettings(repository: string): Promise<any> {
   return await handleOctokitRestRequest(octokit.rest.repos.getPages({
     owner: account,
     repo: repository,
+  }));
+}
+
+export async function enablePages(repository: string): Promise<any> {
+  return await handleOctokitRestRequest(octokit.rest.repos.updateInformationAboutPagesSite({
+    owner: account,
+    repo: repository,
+    // @ts-ignore
+    source: {
+      branch: GITHUB_PAGES_BRANCH,
+      path: '/'
+    }
   }));
 }
 
@@ -94,4 +108,21 @@ export async function getBranches(repository: string): Promise<any> {
     owner: account,
     repo: repository,
   }));
+}
+
+export async function hasGitHubPagesBranch(repository: string): Promise<boolean> {
+  const branches = await getBranches(repository);
+  return branches.find((b: any) => b.name === GITHUB_PAGES_BRANCH);
+}
+
+export async function hasPagesEnabled(repository: string): Promise<boolean> {
+  return !!await getPagesSettings(repository);
+}
+
+export async function isRepositoryEnabled(repository: string): Promise<boolean> {
+  const data = await handleOctokitRestRequest(octokit.rest.repos.get({
+    owner: account,
+    repo: repository,
+  }));
+  return data && !data.fork && !data.archived && !data.disabled;
 }

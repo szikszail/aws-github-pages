@@ -1,5 +1,5 @@
 import { repositories, account } from "../settings.json";
-import { setPageDomain, setRepositoryDomain } from "./github";
+import { enablePages, hasPagesEnabled, setPageDomain, setRepositoryDomain } from "./github";
 
 
 (async () => {
@@ -9,7 +9,14 @@ import { setPageDomain, setRepositoryDomain } from "./github";
 })();
 
 async function processRepository(repository: string): Promise<void> {
-  console.log(`Processing ${account}/${repository}...`);
+  const repo = `${account}/${repository}`;
+  console.log(`Processing ${repo}...`);
+  if (!await hasPagesEnabled(repository)) {
+    console.log(`...enabling pages for ${repo}`);
+    await enablePages(repository);
+  }
+  console.log(`...adding page domain for ${repo}`);
   await setPageDomain(repository);
+  console.log(`...adding repository domain for ${repo}`);
   await setRepositoryDomain(repository);
 }

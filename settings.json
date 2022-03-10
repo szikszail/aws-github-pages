@@ -2,7 +2,9 @@
   "repositories": [
     "lines-builder",
     "npm-package",
+    "object-set-type",
     "require-it",
+    "ts-service-seed",
     "with-aws-creds"
   ],
   "account": "szikszail",
