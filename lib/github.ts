@@ -99,7 +99,7 @@ export async function setRepositoryDomain(repository: string): Promise<any> {
   return await handleOctokitRestRequest(octokit.rest.repos.update({
     owner: account,
     repo: repository,
-    homepage: `${repository}.${domain}`,
+    homepage: `https://${repository}.${domain}`,
   }));
 }
 
