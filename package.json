@@ -23,7 +23,7 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "constructs": "^10.1.81",
+    "constructs": "^10.1.84",
     "aws-cdk-lib": "2.27.0",
     "source-map-support": "^0.5.16",
     "@octokit/rest": "^18.12.0"
